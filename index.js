@@ -31,6 +31,13 @@ async function run() {
       res.send(fruits);
     });
 
+    app.get("/inventory/:id", async (req, res) => {
+      const fruitId = req.params.id;
+      const query = { _id: ObjectId(fruitId) };
+      const fruit = await fruitsCollection.findOne(query);
+      res.send(fruit);
+    });
+
     // Delete fruits
     app.delete("/inventory/:id", async (req, res) => {
       const id = req.params.id;
