@@ -25,9 +25,20 @@ async function run() {
 
     // Get fruits
     app.get("/inventory", async (req, res) => {
+      console.log(req.query)
+      const limit = parseInt(req.query.limit);
+      console.log(limit);
+
       const query = {};
       const cursor = fruitsCollection.find(query);
-      const fruits = await cursor.toArray();
+      let fruits;
+
+      if (limit) {
+        fruits = await cursor.limit(limit).toArray();
+      }
+      else {
+        fruits = await cursor.toArray();
+      }
       res.send(fruits);
     });
 
@@ -58,3 +69,5 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log("Listening to port", port);
 });
+
+// AIzaSyBHpV7SXKJMNtHeZq7klJpeCQYDKcuCOgc
