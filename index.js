@@ -69,7 +69,14 @@ async function run() {
       const result = await fruitsCollection.updateOne(filter, updatedData, options);
       res.send(result);
 
-    })
+    });
+
+    // Add Fruits
+    app.post("/inventory", async (req, res) => {
+      const fruit = req.body;
+      const result = await fruitsCollection.insertOne(fruit);
+      res.send(result);
+    });
   } finally {
   }
 }
