@@ -25,9 +25,7 @@ async function run() {
 
     // Get fruits
     app.get("/inventory", async (req, res) => {
-      console.log(req.query)
       const limit = parseInt(req.query.limit);
-      console.log(limit);
 
       const query = {};
       const cursor = fruitsCollection.find(query);
@@ -56,6 +54,22 @@ async function run() {
       const result = await fruitsCollection.deleteOne(query);
       res.send(result);
     });
+
+    // Update Fruits Stock 
+    app.put('/inventory/:id', async (req, res) => {
+      const id = req.params.id;
+      const updatedFruit = req.body;
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updatedData = {
+        $set: {
+          quantity: updatedFruit.quantity
+        }
+      };
+      const result = await fruitsCollection.updateOne(filter, updatedData, options);
+      res.send(result);
+
+    })
   } finally {
   }
 }
