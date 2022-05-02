@@ -26,8 +26,15 @@ async function run() {
     // Get fruits
     app.get("/inventory", async (req, res) => {
       const limit = parseInt(req.query.limit);
+      const email = req.query.email;
 
-      const query = {};
+      let query;
+      if (email) {
+        query = { email };
+      }
+      else {
+        query = {};
+      }
       const cursor = fruitsCollection.find(query);
       let fruits;
 
