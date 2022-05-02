@@ -27,6 +27,8 @@ async function run() {
     app.get("/inventory", async (req, res) => {
       const limit = parseInt(req.query.limit);
       const email = req.query.email;
+      const page = parseInt(req.query.page);
+      const size = 5;
 
       let query;
       if (email) {
@@ -41,6 +43,9 @@ async function run() {
       if (limit) {
         fruits = await cursor.limit(limit).toArray();
       }
+      else if (page || page === 0) {
+        fruits = await cursor.skip(page * size).limit(size).toArray();
+      }
       else {
         fruits = await cursor.toArray();
       }
@@ -52,6 +57,12 @@ async function run() {
       const query = { _id: ObjectId(fruitId) };
       const fruit = await fruitsCollection.findOne(query);
       res.send(fruit);
+    });
+
+    // Fruit count
+    app.get('/fruitCount', async (req, res) => {
+      const count = await fruitsCollection.estimatedDocumentCount();
+      res.send({ count });
     });
 
     // Delete fruits
