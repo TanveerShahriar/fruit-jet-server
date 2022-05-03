@@ -118,9 +118,7 @@ async function run() {
       res.send(result);
     });
 
-    // My Items
-
-    // Get My Fruits based on email
+    // Get My Fruits with JWT
     app.get("/myinventory", verifyJWT, async (req, res) => {
       const decodedEmail = req.decoded.email;
       const email = req.query.email;
@@ -128,7 +126,7 @@ async function run() {
       if (email === decodedEmail) {
         const query = { email };
         console.log(query);
-        const cursor = myFruitsCollection.find(query);
+        const cursor = fruitsCollection.find(query);
         const myfruits = await cursor.toArray();
         console.log(myfruits);
         res.send(myfruits);
@@ -138,12 +136,6 @@ async function run() {
       }
     });
 
-    // Add My Fruits
-    app.post("/myinventory", async (req, res) => {
-      const fruit = req.body;
-      const result = await myFruitsCollection.insertOne(fruit);
-      res.send(result);
-    });
   } finally {
   }
 }
