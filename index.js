@@ -40,7 +40,7 @@ async function run() {
   try {
     await client.connect();
     const fruitsCollection = client.db("fruitJet").collection("fruits");
-    const myFruitsCollection = client.db("fruitJet").collection("myfruits");
+    const commentsCollection = client.db("fruitJet").collection("comments");
 
     // Token generate from login
     app.post("/login", async (req, res) => {
@@ -132,6 +132,14 @@ async function run() {
         res.status(403).send({ message: "Forbidden access" });
       }
     });
+
+    // Comments
+    app.get("/comment", async (req, res) => {
+      const query = {};
+      const cursor = commentsCollection.find(query);
+      const comments = await cursor.toArray();
+      res.send(comments);
+    })
 
   } finally {
   }
