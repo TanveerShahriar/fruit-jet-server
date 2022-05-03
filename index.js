@@ -122,13 +122,10 @@ async function run() {
     app.get("/myinventory", verifyJWT, async (req, res) => {
       const decodedEmail = req.decoded.email;
       const email = req.query.email;
-      console.log(decodedEmail, email);
       if (email === decodedEmail) {
         const query = { email };
-        console.log(query);
         const cursor = fruitsCollection.find(query);
         const myfruits = await cursor.toArray();
-        console.log(myfruits);
         res.send(myfruits);
       }
       else {
