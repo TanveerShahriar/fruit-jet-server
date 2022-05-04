@@ -141,6 +141,12 @@ async function run() {
       res.send(comments);
     })
 
+    // Add Comments
+    app.post("/comment", async (req, res) => {
+      const comment = req.body;
+      const result = await commentsCollection.insertOne(comment);
+      res.send(result);
+    });
   } finally {
   }
 }
